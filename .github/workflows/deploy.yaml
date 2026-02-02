@@ -1,0 +1,19 @@
+name: Secure-Deploy
+on:
+  push:
+    branches: [ main, master ]
+jobs:
+  build-scan-deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: docker build -t abcd010/simple-web:latest .
+      - name: Security Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'abcd010/simple-web:latest'
+          exit-code: '1' # Security අවුලක් තිබුණොත් මෙතනින් නවත්වන්න
+          severity: 'CRITICAL,HIGH'
+      - name: Deploy
+        run: kubectl apply -f k8s/deployment.yaml
