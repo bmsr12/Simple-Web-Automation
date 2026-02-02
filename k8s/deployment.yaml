@@ -15,6 +15,7 @@ spec:
       containers:
       - name: web-container
         image: abcd010/simple-web:latest
+        imagePullPolicy: IfNotPresent # 👈 මෙන්න මේ පේළිය තමයි වැදගත්ම [cite: 2026-02-02]
         ports:
         - containerPort: 80
 ---
